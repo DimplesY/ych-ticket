@@ -79,7 +79,7 @@ export default {
   components: {},
   methods: {
     handleToLogin() {
-      this.$router.replace("Login");
+      this.$router.replace({ name: "Login" });
     },
   },
 };

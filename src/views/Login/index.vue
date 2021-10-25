@@ -28,7 +28,7 @@
         </van-form>
       </div>
     </div>
-    <div class="user-register">注册账号</div>
+    <div class="user-register" @click="toRegisterPage">注册账号</div>
   </div>
 </template>
 
@@ -59,6 +59,9 @@ export default {
         }
       );
     },
+    toRegisterPage() {
+      this.$router.push({ name: "Register" });
+    },
   },
 };
 </script>
@@ -72,6 +75,11 @@ export default {
       height: 80px;
       @include flex-center;
     }
+  }
+  .user-register {
+    width: 100%;
+    color: $second-color;
+    @include flex-center;
   }
 }
 </style>
