@@ -12,3 +12,11 @@ export const login = (data) => {
     data,
   });
 };
+
+export const register = (data) => {
+  return request({
+    url: "/user/register",
+    method: "POST",
+    data
+  })
+}

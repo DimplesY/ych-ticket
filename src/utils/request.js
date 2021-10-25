@@ -4,7 +4,7 @@ import { Toast } from "vant";
 
 const instance = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
-  timeout: 1000,
+  // timeout: 1000,
   withCredentials: true,
 });
 console.log("环境变量URL", process.env.VUE_APP_BASE_URL);
