@@ -8,11 +8,14 @@
           height="100"
           round
           fit="cover"
-          src="http://wx4.sinaimg.cn/large/9e31678cgy1fpxh7j9crsj205i05iq2t.jpg"
+          :src="userInfo.avatar || defaultAvatar"
         />
       </div>
-      <div class="van-ellipsis" @click="handleToLogin">登陆</div>
-      <div>￥0.00</div>
+      <div v-if="!isLogin" class="van-ellipsis" @click="handleToLogin">
+        登陆
+      </div>
+      <div v-if="isLogin" class="van-ellipsis">{{ userInfo.username }}</div>
+      <div>￥{{ userInfo.price }}</div>
     </div>
     <div class="user-info-detail">
       <van-cell-group title="用户">
@@ -37,9 +40,17 @@
           is-link
           url="/vant/mobile.html"
         />
+        <van-cell
+          v-if="isLogin"
+          icon="revoke"
+          size="large"
+          title="退出登录"
+          is-link
+          @click="handleLogOut"
+        />
       </van-cell-group>
 
-      <van-cell-group title="管理员">
+      <van-cell-group v-if="userInfo.type === 'admin'" title="管理员">
         <van-cell
           icon="friends-o"
           size="large"
@@ -74,12 +85,37 @@
 </template>
 
 <script>
+import { LOGIN_USER, DEFAULT_AVATAR } from "@/utils/constant";
+import { logout } from "@/api/index";
 export default {
   name: "Mine",
   components: {},
+  data() {
+    return {
+      userInfo: "",
+      isLogin: false,
+      defaultAvatar: DEFAULT_AVATAR,
+    };
+  },
+  created() {
+    const userInfo = localStorage.getItem(LOGIN_USER) || null;
+    if (userInfo !== null) {
+      this.userInfo = JSON.parse(userInfo);
+      this.isLogin = true;
+    }
+  },
   methods: {
     handleToLogin() {
       this.$router.replace({ name: "Login" });
+    },
+    handleLogOut(e) {
+      logout().then((res) => {
+        if (res.code === 200) {
+          localStorage.removeItem(LOGIN_USER);
+          this.$toast.success("退出成功");
+          this.$router.go(0);
+        }
+      });
     },
   },
 };
@@ -87,6 +123,7 @@ export default {
 <style lang="scss" scoped>
 .mine {
   width: 100%;
+  padding-bottom: 60px;
   .user-info {
     @include flex-center;
     width: 100%;

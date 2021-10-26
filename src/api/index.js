@@ -13,6 +13,22 @@ export const login = (data) => {
   });
 };
 
+/**
+ * 退出登录
+ * @returns 
+ */
+export const logout = () => {
+  return request({
+    url: "/user/logout",
+    method: "GET"
+  })
+}
+
+/**
+ * 用户注册
+ * @param {*} data 
+ * @returns 
+ */
 export const register = (data) => {
   return request({
     url: "/user/register",

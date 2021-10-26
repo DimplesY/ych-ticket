@@ -2,10 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import uploadImg from "./utils/uploadImg";
 import Vant from "vant";
 import "vant/lib/index.css";
 
 Vue.use(Vant);
+Vue.use(uploadImg);
 
 Vue.config.productionTip = false;
 

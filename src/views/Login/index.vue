@@ -35,6 +35,7 @@
 <script>
 import { login } from "@/api/index";
 import { LOGIN_USER } from "@/utils/constant";
+import md5 from "md5";
 export default {
   data() {
     return {
@@ -53,9 +54,15 @@ export default {
   },
   methods: {
     onSubmit() {
-      login({ username: this.username, password: this.password }).then(
+      login({ username: this.username, password: md5(this.password) }).then(
         (res) => {
-          console.log(res);
+          if (res.code === 200) {
+            localStorage.setItem(LOGIN_USER, JSON.stringify(res.data));
+            this.$router.replace({ name: "Mine" });
+            this.$toast.success("登录成功");
+          } else {
+            this.$toast.fail("登录失败");
+          }
         }
       );
     },
