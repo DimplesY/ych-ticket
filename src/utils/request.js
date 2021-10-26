@@ -25,7 +25,8 @@ instance.interceptors.response.use(
     Toast.clear();
     const { data } = response;
     if (data.code === 400) {
-      return Toast.fail(response.msg);
+      Toast.fail(data.msg)
+      return response;
     }
     return data;
   },

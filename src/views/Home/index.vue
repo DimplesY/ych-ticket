@@ -11,8 +11,16 @@
     </div>
     <div class="filter-men">
       <van-dropdown-menu active-color="#3399CC">
-        <van-dropdown-item v-model="value1" :options="option1" />
-        <van-dropdown-item v-model="value2" :options="option2" />
+        <van-dropdown-item
+          v-model="value1"
+          :options="option1"
+          @change="changeFilter"
+        />
+        <van-dropdown-item
+          v-model="value2"
+          :options="option2"
+          @change="changeFilter"
+        />
       </van-dropdown-menu>
     </div>
     <div class="card-list">
@@ -22,7 +30,7 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <TicketCard v-for="(item, index) in list" :key="index" />
+        <TicketCard :data="item" v-for="(item, index) in list" :key="index" />
       </van-list>
     </div>
   </div>
@@ -30,6 +38,7 @@
 
 <script>
 import TicketCard from "@/components/TicketCard";
+import { ticketList } from "@/api";
 export default {
   name: "Home",
   components: {
@@ -40,43 +49,47 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      value1: 0,
-      value2: "a",
+      page: {
+        pageSize: 10,
+        pageNum: 0,
+      },
+      value1: "",
+      value2: "time",
       option1: [
-        { text: "全部门票", value: 0 },
-        { text: "推荐门票", value: 1 },
-        { text: "热门门票", value: 2 },
+        { text: "全部门票", value: "" },
+        { text: "热门门票", value: "view_num" },
       ],
       option2: [
-        { text: "时间排序", value: "a" },
-        { text: "价格排序", value: "b" },
-        { text: "销量排序", value: "c" },
+        { text: "时间排序", value: "time" },
+        { text: "价格排序", value: "price" },
+        { text: "销量排序", value: "count" },
       ],
     };
   },
 
   methods: {
+    changeFilter() {
+      this.page = {
+        pageSize: 10,
+        pageNum: 0,
+      };
+      this.onLoad();
+    },
     onLoad() {
       this.$toast.loading({
         message: "加载中...",
         forbidClick: true,
       });
-      // 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1);
-        }
-
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true;
-        }
-        this.$toast.clear();
-      }, 1000);
+      this.page.pageNum += 1;
+      let params = {
+        ...this.page,
+        orderBy: this.value2,
+        filter: this.value1,
+      };
+      ticketList(params).then((res) => {
+        this.list = res.data.records;
+        console.log(res);
+      });
     },
   },
 };

@@ -12,7 +12,7 @@ const uploadImg = (file) => {
   }
   return new Promise((resolve, reject) => {
     Toast.loading("上传中...")
-    axios.post(process.env.VUE_APP_BASE_URL + "/upload", params, config)
+    axios.create().post(process.env.VUE_APP_BASE_URL + "/upload", params, config)
       .then(res => {
         if (res && res.data && res.data.code === 200) {
           resolve(res.data)

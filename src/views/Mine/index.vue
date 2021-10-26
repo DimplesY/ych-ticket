@@ -19,19 +19,13 @@
     </div>
     <div class="user-info-detail">
       <van-cell-group title="用户">
-        <van-cell
-          icon="contact"
-          size="large"
-          title="个人信息"
-          is-link
-          to="index"
-        />
+        <van-cell icon="contact" size="large" title="个人信息" is-link />
         <van-cell
           icon="gold-coin-o"
           size="large"
           title="余额充值"
           is-link
-          to="index"
+          @click="addPrice"
         />
         <van-cell
           size="large"
@@ -81,12 +75,102 @@
         />
       </van-cell-group>
     </div>
+
+    <!-- 用户信息弹出层 -->
+    <van-popup
+      v-model="showRecharge"
+      round
+      closeable
+      :style="{ height: '50%', width: '90%' }"
+    >
+      <div class="title">余额充值</div>
+      <div class="price">
+        <van-field
+          v-model="recharge"
+          label="金额"
+          size="large"
+          type="number"
+          readonly
+          colon
+          label-width="50px"
+          placeholder="请输入充值金额"
+        />
+        <van-row style="margin-top: 20px" type="flex" justify="space-around">
+          <van-col span="6">
+            <van-button
+              style="width: 85px"
+              @click="czNumber(100)"
+              plain
+              type="info"
+              >￥100</van-button
+            >
+          </van-col>
+          <van-col span="6">
+            <van-button
+              style="width: 85px"
+              @click="czNumber(200)"
+              plain
+              type="info"
+              >￥200</van-button
+            >
+          </van-col>
+          <van-col span="6">
+            <van-button
+              style="width: 85px"
+              @click="czNumber(300)"
+              plain
+              type="info"
+              >￥300</van-button
+            >
+          </van-col>
+        </van-row>
+
+        <van-row style="margin-top: 20px" type="flex" justify="space-around">
+          <van-col span="6">
+            <van-button
+              style="width: 85px"
+              @click="czNumber(400)"
+              plain
+              type="info"
+              >￥400</van-button
+            >
+          </van-col>
+          <van-col span="6">
+            <van-button
+              style="width: 85px"
+              @click="czNumber(500)"
+              plain
+              type="info"
+              >￥500</van-button
+            >
+          </van-col>
+          <van-col span="6">
+            <van-button
+              style="width: 85px"
+              @click="czNumber(600)"
+              plain
+              type="info"
+              >￥600</van-button
+            >
+          </van-col>
+        </van-row>
+      </div>
+      <div class="cz-btn">
+        <van-button
+          style="width: 150px"
+          icon="passed"
+          type="primary"
+          @click="charge"
+          >充值</van-button
+        >
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { LOGIN_USER, DEFAULT_AVATAR } from "@/utils/constant";
-import { logout } from "@/api/index";
+import { logout, getUserInfo, addUserPrice } from "@/api/index";
 export default {
   name: "Mine",
   components: {},
@@ -95,6 +179,8 @@ export default {
       userInfo: "",
       isLogin: false,
       defaultAvatar: DEFAULT_AVATAR,
+      showRecharge: false,
+      recharge: 0,
     };
   },
   created() {
@@ -102,6 +188,16 @@ export default {
     if (userInfo !== null) {
       this.userInfo = JSON.parse(userInfo);
       this.isLogin = true;
+    } else {
+      getUserInfo().then((res) => {
+        if (res.data.code === 400) {
+          this.isLogin = false;
+        } else {
+          this.isLogin = true;
+          this.userInfo = res.data;
+          localStorage.setItem(LOGIN_USER, JSON.stringify(res.data));
+        }
+      });
     }
   },
   methods: {
@@ -116,6 +212,33 @@ export default {
           this.$router.go(0);
         }
       });
+    },
+    czNumber(price) {
+      this.recharge = price;
+    },
+    addPrice() {
+      if (!this.isLogin) {
+        return this.$toast("请先登录");
+      }
+      this.showRecharge = true;
+    },
+    charge() {
+      let data = {
+        price: this.recharge,
+      };
+      addUserPrice(data)
+        .then((res) => {
+          if (res.code === 200) {
+            return getUserInfo();
+          }
+        })
+        .then((res) => {
+          this.$toast.success("充值成功...");
+          localStorage.setItem(LOGIN_USER, JSON.stringify(res.data));
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 2000);
+        });
     },
   },
 };
@@ -148,6 +271,16 @@ export default {
   .user-info-detail {
     width: 100%;
     overflow: hidden;
+  }
+  .title {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  .cz-btn {
+    text-align: center;
+    margin-top: 30px;
   }
 }
 </style>

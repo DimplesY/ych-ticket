@@ -1,12 +1,7 @@
 <template>
   <div class="card-wrap">
     <div>
-      <van-image
-        width="100"
-        height="100"
-        fit="cover"
-        src="https://img01.yzcdn.cn/vant/cat.jpeg"
-      />
+      <van-image width="100" height="100" fit="cover" :src="itemImgUrl" />
     </div>
     <div>
       <div class="ticket-name">这是门票的名字</div>
@@ -18,6 +13,12 @@
 <script>
 export default {
   name: "TicketCard",
+  props: {
+    data: {
+      type: Object,
+      default: {},
+    },
+  },
   data() {
     return {
       title: "",
@@ -26,6 +27,15 @@ export default {
   created() {
     console.log(process.env.VUE_APP_BASE_URL);
   },
+  computed: {
+    itemImgUrl() {
+      if (this.data.imgList[0]) {
+        return "/api" + this.data.imgList[0].url;
+      }
+      return "";
+    },
+  },
+  methods: {},
 };
 </script>
 

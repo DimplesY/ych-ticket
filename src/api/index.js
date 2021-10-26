@@ -72,3 +72,30 @@ export const updateUserInfo = (data) => {
     data
   })
 }
+
+/**
+ * 充值
+ * @param {*} data 
+ * @returns 
+ */
+export const addUserPrice = (data) => {
+  return request({
+    url: "/user/charge",
+    method: "POST",
+    data
+  })
+}
+
+
+/**
+ * 门票列表
+ * @param {*} params 
+ * @returns 
+ */
+export const ticketList = (params) => {
+  return request({
+    url: "/ticket/list",
+    method: "GET",
+    params
+  })
+}
