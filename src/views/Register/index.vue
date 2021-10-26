@@ -10,7 +10,7 @@
               name="用户名"
               label="用户名"
               placeholder="用户名"
-              :rules="[{required: true, message: '请输入用户名'}]"
+              :rules="[{trigger: 'onBlur', message: '用户名不可用',validator: checkUserName}]"
           />
           <van-field
               v-model="password"
@@ -28,14 +28,14 @@
               placeholder="请再出输入密码"
               :rules="[{validator: validatorMessage, message: '密码输入不一致'}]"
           />
-<!--          <van-field
-              v-model="email"
-              type="email"
-              name="邮箱"
-              label="邮箱"
-              placeholder="请输入邮箱"
-              :rules="[{ required: true, message: '请填写邮箱' }]"
-          />-->
+          <!--          <van-field
+                        v-model="email"
+                        type="email"
+                        name="邮箱"
+                        label="邮箱"
+                        placeholder="请输入邮箱"
+                        :rules="[{ required: true, message: '请填写邮箱' }]"
+                    />-->
           <div style="margin: 50px">
             <van-button round block type="info" native-type="submit">
               注册
@@ -71,6 +71,9 @@ export default {
     },
     validatorMessage(val) {
       return this.password === val
+    },
+    checkUserName(val) {
+      return Promise.resolve(false)
     }
   }
 };
