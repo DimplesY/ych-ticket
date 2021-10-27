@@ -3,10 +3,30 @@
     <van-nav-bar title="首页" :fixed="true" />
     <div class="banner">
       <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-        <van-swipe-item>1</van-swipe-item>
-        <van-swipe-item>2</van-swipe-item>
-        <van-swipe-item>3</van-swipe-item>
-        <van-swipe-item>4</van-swipe-item>
+        <van-swipe-item>
+          <img
+            src="https://p1.music.126.net/sRYwh1LDhwQgvJn-nl1vdQ==/109951166559718785.jpg?imageView&quality=89"
+            style="width: 100%; height: 100%; display: block"
+          />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img
+            src="https://p1.music.126.net/BK_ipiEZW67_c4q_pUEKbg==/109951166561188686.jpg?imageView&quality=89"
+            style="width: 100%; height: 100%; display: block"
+          />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img
+            src="https://p1.music.126.net/qMzg-S6VK-NXOyDOTxw2ng==/109951166559727542.jpg?imageView&quality=89"
+            style="width: 100%; height: 100%; display: block"
+          />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img
+            src="https://p1.music.126.net/Ct-e81oPEx0muGcfXXpAqA==/109951166559720486.jpg?imageView&quality=89"
+            style="width: 100%; height: 100%; display: block"
+          />
+        </van-swipe-item>
       </van-swipe>
     </div>
     <div class="filter-men">

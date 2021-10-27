@@ -1,17 +1,29 @@
 <template>
-  <div class="card-wrap" @click="handleToDetail">
-    <div>
-      <van-image width="100" height="100" fit="cover" :src="itemImgUrl" />
+  <van-swipe-cell>
+    <div class="card-wrap" @click="handleToDetail">
+      <div>
+        <van-image width="100" height="100" fit="cover" :src="itemImgUrl" />
+      </div>
+      <div>
+        <div class="ticket-name">{{ data.name }}</div>
+        <div class="ticket-desc van-multi-ellipsis--l2">{{ data.desc }}</div>
+        <div class="price">￥ {{ data.price }}</div>
+      </div>
     </div>
-    <div>
-      <div class="ticket-name">{{ data.name }}</div>
-      <div class="ticket-desc van-multi-ellipsis--l2">{{ data.desc }}</div>
-      <div class="price">￥ {{ data.price }}</div>
-    </div>
-  </div>
+    <template #right>
+      <van-button
+        square
+        type="danger"
+        @click="handleDelete"
+        text="删除"
+        class="delete-button"
+      />
+    </template>
+  </van-swipe-cell>
 </template>
 
 <script>
+import { ticketDelete } from "@/api";
 export default {
   name: "TicketCard",
   props: {
@@ -25,10 +37,7 @@ export default {
       title: "",
     };
   },
-  created() {
-    console.log(this.data,"AAAAAAAAAAA")
-    console.log(process.env.VUE_APP_BASE_URL);
-  },
+  created() {},
   computed: {
     itemImgUrl() {
       if (this.data.imgList[0]) {
@@ -42,6 +51,14 @@ export default {
       this.$router.push({
         name: "Ticket",
         params: { id: this.data.id },
+      });
+    },
+    handleDelete() {
+      ticketDelete(this.data.id).then((res) => {
+        if (res.code === 200) {
+          this.$toast.success("删除成功");
+          window.location.reload();
+        }
       });
     },
   },
@@ -81,5 +98,8 @@ export default {
       }
     }
   }
+}
+.delete-button {
+  height: 100%;
 }
 </style>

@@ -8,7 +8,7 @@
           height="100"
           round
           fit="cover"
-          :src="userInfo.avatar || defaultAvatar"
+          :src="'/api' + userInfo.avatar || defaultAvatar"
         />
       </div>
       <div v-if="!isLogin" class="van-ellipsis" @click="handleToLogin">
@@ -32,7 +32,7 @@
           icon="coupon-o"
           title="我的门票"
           is-link
-          url="/vant/mobile.html"
+          @click="myOrder"
         />
         <van-cell
           v-if="isLogin"
@@ -50,28 +50,21 @@
           size="large"
           title="用户管理"
           is-link
-          to="index"
-        />
-        <van-cell
-          icon="contact"
-          size="large"
-          title="充值订单"
-          is-link
-          to="index"
+          @click="toUser"
         />
         <van-cell
           icon="gold-coin-o"
           size="large"
           title="门票管理"
+          @click="toTicket"
           is-link
-          to="index"
         />
         <van-cell
           size="large"
           icon="bill-o"
           title="收益统计"
           is-link
-          url="/vant/mobile.html"
+          @click="toCount"
         />
       </van-cell-group>
     </div>
@@ -222,6 +215,30 @@ export default {
       }
       this.showRecharge = true;
     },
+    toCount() {
+      if (!this.isLogin) {
+        return this.$toast("请先登录");
+      }
+      this.$router.push({ name: "Count" });
+    },
+    toTicket() {
+      if (!this.isLogin) {
+        return this.$toast("请先登录");
+      }
+      this.$router.push({ name: "SysTicket" });
+    },
+    myOrder() {
+      if (!this.isLogin) {
+        return this.$toast("请先登录");
+      }
+      this.$router.push({ name: "MyOrder" });
+    },
+    toUser() {
+      if (!this.isLogin) {
+        return this.$toast("请先登录");
+      }
+      this.$router.push({ name: "User" });
+    },
     charge() {
       let data = {
         price: this.recharge,
@@ -233,7 +250,7 @@ export default {
           }
         })
         .then((res) => {
-          this.$toast.success("充值成功...");
+          this.$toast.success("充值成功");
           localStorage.setItem(LOGIN_USER, JSON.stringify(res.data));
           setTimeout(() => {
             this.$router.go(0);

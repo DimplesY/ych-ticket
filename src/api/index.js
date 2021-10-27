@@ -99,3 +99,74 @@ export const ticketList = (params) => {
     params
   })
 }
+
+export const addTicket = (data) => {
+  return request({
+    url: "/ticket",
+    method: "POST",
+    data
+  })
+}
+
+
+/**
+ * 查看演唱会门票详情
+ * 
+ * @param {演唱会门票id}} id 
+ * @returns 
+ */
+export const ticketDetail = (id) => {
+  return request({
+    url: `/ticket/${id}`,
+    method: "GET"
+  })
+}
+
+/**
+ * 下单购票
+ * @param {门票id}} data 
+ * @returns 
+ */
+export const buyTicket = (data) => {
+  return request({
+    url: "/order/buy",
+    method: "POST",
+    data
+  })
+}
+
+export const myOrder = () => {
+  return request({
+    url: "/order/list",
+    method: "GET"
+  })
+}
+
+export const userList = (params) => {
+  return request({
+    url: "/user/list",
+    method: "GET",
+    params
+  })
+}
+
+export const userDelete = (id) => {
+  return request({
+    url: `/user/${id}`,
+    method: "DELETE",
+  })
+}
+
+export const sysCount = () => {
+  return request({
+    url: "/order/count",
+    method: "GET"
+  })
+}
+
+export const ticketDelete = (id) => {
+  return request({
+    url: `/ticket/${id}`,
+    method: "DELETE"
+  })
+}

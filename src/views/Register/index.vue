@@ -112,7 +112,7 @@ export default {
     },
     afterRead(file) {
       this.$upload(file.file).then((res) => {
-        this.avatar = process.env.VUE_APP_BASE_URL + res.data.url;
+        this.avatar = res.data.url;
       });
     },
     validatorMessage(val) {
