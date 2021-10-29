@@ -19,7 +19,13 @@
     </div>
     <div class="user-info-detail">
       <van-cell-group title="用户">
-        <van-cell icon="contact" size="large" title="个人信息" is-link />
+        <van-cell
+          icon="contact"
+          size="large"
+          title="个人信息"
+          @click="showUserInfo"
+          is-link
+        />
         <van-cell
           icon="gold-coin-o"
           size="large"
@@ -69,7 +75,49 @@
       </van-cell-group>
     </div>
 
-    <!-- 用户信息弹出层 -->
+    <!-- 用户信息弹出层  -->
+    <van-popup
+      v-model="showInfo"
+      round
+      closeable
+      :style="{ height: '60%', width: '90%' }"
+    >
+      <div class="title">用户信息</div>
+      <div style="margin: 30px auto">
+        <div class="info-item">
+          <div>头像</div>
+          <div>
+            <van-image
+              round
+              fit="cover"
+              width="100"
+              height="100"
+              :src="'/api' + userInfo.avatar"
+            />
+          </div>
+        </div>
+        <div class="info-item">
+          <div>用户名</div>
+          <div>
+            {{ userInfo.username }}
+          </div>
+        </div>
+        <div class="info-item">
+          <div>性别</div>
+          <div>
+            {{ userInfo.gender }}
+          </div>
+        </div>
+        <div class="info-item">
+          <div>余额</div>
+          <div>
+            ￥{{ userInfo.price }}
+          </div>
+        </div>
+      </div>
+    </van-popup>
+
+    <!-- 充值信息弹出层 -->
     <van-popup
       v-model="showRecharge"
       round
@@ -174,6 +222,7 @@ export default {
       defaultAvatar: DEFAULT_AVATAR,
       showRecharge: false,
       recharge: 0,
+      showInfo: false,
     };
   },
   created() {
@@ -199,12 +248,13 @@ export default {
     },
     handleLogOut(e) {
       logout().then((res) => {
-        if (res.code === 200) {
-          localStorage.removeItem(LOGIN_USER);
-          this.$toast.success("退出成功");
-          this.$router.go(0);
-        }
+        localStorage.removeItem(LOGIN_USER);
+        this.$toast.success("退出成功");
+        this.$router.go(0);
       });
+    },
+    showUserInfo() {
+      this.showInfo = true;
     },
     czNumber(price) {
       this.recharge = price;
@@ -298,6 +348,15 @@ export default {
   .cz-btn {
     text-align: center;
     margin-top: 30px;
+  }
+  .info-item {
+    @include flex-center();
+    justify-content: space-around;
+    div {
+      width: 300px;
+      height: 70px;
+      @include flex-center();
+    }
   }
 }
 </style>

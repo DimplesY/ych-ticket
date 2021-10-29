@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <transition name="van-slide-right">
-      <router-view />
+      <keep-alive include="/home">
+        <router-view />
+      </keep-alive>
     </transition>
-
     <van-tabbar route>
       <van-tabbar-item replace to="/home" icon="home-o"> 首页 </van-tabbar-item>
       <van-tabbar-item replace to="/search" icon="search">

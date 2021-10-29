@@ -58,8 +58,10 @@ export default {
         (res) => {
           if (res.code === 200) {
             localStorage.setItem(LOGIN_USER, JSON.stringify(res.data));
-            this.$router.replace({ name: "Mine" });
             this.$toast.success("登录成功");
+            setTimeout(() => {
+              this.$router.replace({ name: "Mine" });
+            }, 1000);
           } else {
             this.$toast.fail("登录失败");
           }

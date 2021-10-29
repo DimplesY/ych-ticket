@@ -43,7 +43,7 @@
         />
       </van-dropdown-menu>
     </div>
-    <div class="card-list">
+    <div class="card-list" :key="new Date().getTime()">
       <van-list
         v-model="loading"
         :finished="finished"
