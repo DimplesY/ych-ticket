@@ -30,6 +30,14 @@
               @click="deleteUser(item.id)"
               class="delete-button"
             />
+            <van-button
+              square
+              v-if="item.type == 'user'"
+              type="primary"
+              text="设为管理"
+              @click="setAdmin(item.id)"
+              class="delete-button"
+            />
           </template>
         </van-swipe-cell>
       </van-list>
@@ -38,7 +46,7 @@
 </template>
 
 <script>
-import { userList, userDelete } from "@/api/index";
+import { userList, userDelete, setAdmin } from "@/api/index";
 export default {
   name: "User",
   data() {
@@ -80,6 +88,15 @@ export default {
             this.$toast.success("删除成功！");
           }
         }
+      });
+    },
+
+    setAdmin(id) {
+      this.$toast.loading();
+      setAdmin(id).then((res) => {
+        this.$toast.clear();
+        this.$toast.success("设置成功");
+        this.$router.go(0);
       });
     },
   },

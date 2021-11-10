@@ -72,6 +72,13 @@
           is-link
           @click="toCount"
         />
+        <van-cell
+          size="large"
+          icon="bill-o"
+          title="Banner图管理"
+          is-link
+          @click="toBanner"
+        />
       </van-cell-group>
     </div>
 
@@ -110,9 +117,7 @@
         </div>
         <div class="info-item">
           <div>余额</div>
-          <div>
-            ￥{{ userInfo.price }}
-          </div>
+          <div>￥{{ userInfo.price }}</div>
         </div>
       </div>
     </van-popup>
@@ -306,6 +311,12 @@ export default {
             this.$router.go(0);
           }, 2000);
         });
+    },
+    toBanner() {
+      if (!this.isLogin) {
+        return this.$toast("请先登录");
+      }
+      this.$router.push({ name: "Banner" });
     },
   },
 };

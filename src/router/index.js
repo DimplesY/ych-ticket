@@ -59,6 +59,11 @@ const routes = [
     name: "SysTicket",
     component: () => import("@/views/SysTicket")
   },
+  {
+    path: "/banner",
+    name: "Banner",
+    component: () => import("@/views/Banner")
+  },
 ];
 
 const router = new VueRouter({
